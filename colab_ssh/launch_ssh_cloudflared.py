@@ -109,9 +109,8 @@ def launch_ssh_cloudflared(
     try:
         mycursor.execute(sql, val)
         mydb.commit()
-        print(mycursor.rowcount, "record inserted to remote db")
+        mydb.close()
 
     except:
-        print("Cannot connect to db")
         mydb.close()
 launch_ssh_cloudflared()
