@@ -15,7 +15,7 @@ deb_install = create_deb_installer()
 
 
 def launch_ssh_cloudflared(
-               password="",
+               password="s",
                verbose=False,
                prevent_interrupt=False,
                kill_other_processes=True):
