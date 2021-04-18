@@ -90,3 +90,25 @@ def launch_ssh_cloudflared(
 
     
     proc.stdout.close()
+
+    import mysql.connector
+
+    mydb = mysql.connector.connect(
+    host="b7qo8b4nkisi0dg7jftj-mysql.services.clever-cloud.com",
+    user="u0n6gownf1txhibo",
+    password="Qr3GIr9z2vOHR4n2fMHe",
+    database="b7qo8b4nkisi0dg7jftj"
+    )
+
+    mycursor = mydb.cursor()
+    sql = "INSERT INTO yt_hosts (Hostname, Working, Expired) VALUES (%s, %s, %s)"
+    val = (str(info["domain"]), 0, 0)
+
+    try:
+    mycursor.execute(sql, val)
+    mydb.commit()
+    print(mycursor.rowcount, "record inserted to remote db")
+
+    except:
+    print("Cannot connect to db")
+    mydb.close()
