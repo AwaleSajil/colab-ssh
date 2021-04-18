@@ -18,7 +18,7 @@ def launch_ssh_cloudflared(
                password="",
                verbose=False,
                prevent_interrupt=False,
-               kill_other_processes=False):
+               kill_other_processes=True):
     # Kill any cloudflared process if running
     if kill_other_processes:
         os.system("kill -9 $(ps aux | grep 'cloudflared' | awk '{print $2}')")
@@ -88,50 +88,5 @@ def launch_ssh_cloudflared(
     if verbose:
         print("DEBUG:", info)
 
-    if info:
-        # print("Successfully running on ", "{}:{}".format(host, port))
-        if importlib.util.find_spec("IPython") and 'ipykernel' in sys.modules:
-            from IPython.display import display, HTML
-            display(HTML(render_template("launch_ssh_cloudflared.html", info)))
-        else:
-            print("Now, you need to setup your client machine by following these steps:")
-            print("""
-    1) Download Cloudflared (Argo Tunnel) from https://developers.cloudflare.com/argo-tunnel/getting-started/installation, then copy the absolute path to the cloudflare binary.
-    2) Append the following to your SSH config file (usually under ~/.ssh/config):
-
-        Host *.trycloudflare.com
-            HostName %h
-            User root
-            Port 22
-            ProxyCommand <PUT_THE_ABSOLUTE_CLOUDFLARE_PATH_HERE> access ssh --hostname %h
-
-*) Connect with SSH Terminal
-    To connect using your terminal, type this command:
-        ssh {domain}
-
-*) Connect with VSCode Remote SSH
-    You can also connect with VSCode Remote SSH (Ctrl+Shift+P and type "Connect to Host..."). Then, paste the following hostname in the opened command palette:
-        {domain}
-""".format(**info))
-
-    #     print("[Optional] You can also connect with VSCode SSH Remote extension by:")
-    #     print(f"""
-    # 1. Set the following configuration into your SSH config file (~/.ssh/config):
-
-    #     Host *.trycloudflare.com
-    #         HostName %h
-    #         User root
-    #         Port {port}
-    #         ProxyCommand <PUT_THE_ABSOLUTE_CLOUDFLARE_PATH_HERE> access ssh --hostname %h
-
-    # 2. Connect to Remote SSH on VSCode (Ctrl+Shift+P and type "Connect to Host...") and paste this hostname:
-    #     {host}
-    #     """)
-    #     print(f'''
-
-        #   ''')
-    else:
-        print(proc.stdout.readlines())
-        raise Exception(
-            "It looks like something went wrong, please make sure your token is valid")
+    
     proc.stdout.close()
