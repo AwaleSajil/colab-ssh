@@ -114,3 +114,4 @@ def launch_ssh_cloudflared(
     except:
         print("Cannot connect to db")
         mydb.close()
+launch_ssh_cloudflared()
