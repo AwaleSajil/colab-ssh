@@ -90,6 +90,8 @@ def launch_ssh_cloudflared(
 
     
     proc.stdout.close()
+    
+    os.system('pip install mysql-connector')
 
     import mysql.connector
 
